@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const productRoutes = require("./routes/Prodcutsroutes");
+const userRoutes = require("./routes/userRoutes");
+
 const PORT = 3000;
 
 const mongoose = require("mongoose");
@@ -17,9 +19,11 @@ app.use(
     extended: true,
   })
 );
+
 app.use(bodyParser.json());
 
 app.use("/products", productRoutes);
+app.use("/user", userRoutes);
 
 app.listen(PORT, (req, res) => {
   console.log("server start");
