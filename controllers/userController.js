@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const bcrypt = require("bcrypt");
 
 const registrate_user = async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
@@ -11,6 +12,8 @@ const registrate_user = async (req, res) => {
       email: req.body.email,
       password: req.body.password,
     });
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
     await user.save();
     res.send(user);
   }
