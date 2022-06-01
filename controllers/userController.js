@@ -18,13 +18,17 @@ const login_user = async (req, res) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       // Create token
-      const token = jwt.sign({ user_id: user._id, email }, process.env.TOKEN_KEY, {
-        expiresIn: "2h",
-      });
+      const token = jwt.sign(
+        { user_id: user._id, email },
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: "2h",
+        }
+      );
 
       // save user token
       user.token = token;
-
+      await user.save();
       // user
       return res.status(200).json(user);
     }
@@ -56,7 +60,6 @@ const registrate_user = async (req, res) => {
       password: encryptedPassword,
     });
 
-    
     // return new user
     return res.status(201).json(user);
   } catch (err) {

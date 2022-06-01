@@ -4,12 +4,12 @@ const prodcuts_getall = async (req, res) => {
   try {
     const limit = parseInt(req.query.limit);
     const offset = parseInt(req.query.skip);
-    const productsCollection = await Product.find().skip(offset).limit(limit);
+    const productsCollection = await Product.find({}).skip(offset).limit(limit);
     const productsCollectionCount = await Product.count();
     const totalPages = Math.ceil(productsCollectionCount / limit);
     const currentPage = Math.ceil(productsCollectionCount % offset);
     return res.status(200).send({
-      message: "yes",
+      message: "ok",
       data: productsCollection,
       paging: {
         total: productsCollectionCount,
@@ -28,10 +28,18 @@ const prodcuts_getall = async (req, res) => {
 const product_create_post = async (req, res) => {
   try {
     const { image, name, mpns, manifactuler } = req.body;
+
     if (!(image && name && mpns && manifactuler)) {
       return res.status(400).send("data product is not valid");
     }
-    const data = await Product.create({ image, name, mpns, manifactuler });
+
+    const data = await Product.create({
+      image,
+      name,
+      mpns,
+      manifactuler,
+      author: req.user._id,
+    });
     return res.status(200).send({
       message: "OK",
       data,
@@ -58,6 +66,15 @@ const product_delete_all = async (req, res) => {
     });
   }
 };
+const delete_specific_todo = async (req, res, next) => {
+  try {
+    await todoModel.findByIdAndDelete(req.params.id).then(() => {
+      res.sendStatus(200);
+    });
+  } catch (e) {
+    res.status(404).send("ID no valid");
+  }
+};
 
 const product_edit = async (req, res) => {
   try {
@@ -75,4 +92,5 @@ module.exports = {
   product_create_post,
   product_delete_all,
   product_edit,
+  delete_specific_todo,
 };

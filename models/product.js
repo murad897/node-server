@@ -19,8 +19,9 @@ const ProdcutSchema = new Schema(
       type: String,
       required: true,
     },
-    owner: {
-      type: String,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   { timestamps: true }
