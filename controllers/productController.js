@@ -61,11 +61,12 @@ const product_delete_all = async (req, res) => {
 
 const product_edit = async (req, res) => {
   try {
-    await Product.findByIdAndUpdate(req.params.id, req.body).then((data) => {
-      res.send(data);
-    });
+    const data = await Product.findByIdAndUpdate(req.params.id, req.body);
+    return res.status(200).send(data);
   } catch (e) {
-    res.status(404).send("ID no valid");
+    return res.status(404).send({
+      message: e.message,
+    });
   }
 };
 
