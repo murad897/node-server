@@ -56,12 +56,7 @@ const registrate_user = async (req, res) => {
       password: encryptedPassword,
     });
 
-    // Create token
-    const token = jwt.sign({ user_id: user._id, email }, process.env.TOKEN_KEY, {
-      expiresIn: "2h",
-    });
-    // save user token
-    user.token = token;
+    
     // return new user
     return res.status(201).json(user);
   } catch (err) {
