@@ -38,6 +38,7 @@ const prodcuts_getall = async (req, res) => {
     });
   }
 };
+
 const product_create_post = async (req, res) => {
   try {
     const { image, name, mpns, manifactuler } = req.body;
@@ -57,7 +58,23 @@ const product_create_post = async (req, res) => {
   }
 };
 
+const product_delete_all = async (req, res) => {
+  try {
+    const data = await Product.deleteMany({ checked: true });
+    return res.status(200).send({
+      message: "OK",
+      data,
+    });
+  } catch (e) {
+    return res.status(404).send({
+      message: e.message,
+      data: undefined,
+    });
+  }
+};
+
 module.exports = {
   prodcuts_getall,
   product_create_post,
+  product_delete_all
 };

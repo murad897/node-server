@@ -19,6 +19,9 @@ const ProdcutSchema = new Schema(
       type: String,
       required: true,
     },
+    owner: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
