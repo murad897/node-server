@@ -9,5 +9,7 @@ router.get("/", auth.verifyToken, productController.prodcuts_getall);
 router.post("/create", auth.verifyToken, productController.product_create_post);
 //deleteAll product
 router.post("/delete", auth.verifyToken, productController.product_delete_all);
+// //update product
+router.patch("/:id", auth.verifyToken, productController.product_edit);
 
 module.exports = router;

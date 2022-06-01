@@ -1,19 +1,5 @@
 const Product = require("../models/product");
 
-// const prodcuts_getall = async (req, res) => {
-//   try {
-//     const data = await Product.find({}).limit(10);
-//     return res.status(200).send({
-//       message: "OK",
-//       data,
-//     });
-//   } catch (e) {
-//     return res.status(500).send({
-//       message: e.message,
-//       data: null,
-//     });
-//   }
-// };
 const prodcuts_getall = async (req, res) => {
   try {
     const limit = parseInt(req.query.limit);
@@ -73,8 +59,19 @@ const product_delete_all = async (req, res) => {
   }
 };
 
+const product_edit = async (req, res) => {
+  try {
+    await Product.findByIdAndUpdate(req.params.id, req.body).then((data) => {
+      res.send(data);
+    });
+  } catch (e) {
+    res.status(404).send("ID no valid");
+  }
+};
+
 module.exports = {
   prodcuts_getall,
   product_create_post,
-  product_delete_all
+  product_delete_all,
+  product_edit,
 };
