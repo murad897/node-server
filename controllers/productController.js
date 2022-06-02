@@ -1,5 +1,5 @@
 const Product = require("../models/product");
-
+const User = require("../models/user");
 const prodcuts_getEach = async (req, res) => {
   try {
     await Product.findById(req.params.id).then((data) => {
@@ -14,17 +14,20 @@ const prodcuts_getEach = async (req, res) => {
 const prodcuts_getall = async (req, res) => {
   try {
     const limit = parseInt(req.query.limit);
-    const offset = parseInt(req.query.skip);
-    const productsCollection = await Product.find({ user: req.user._id.toString() });
+    const offset = parseInt(req.query.offset);
+    console.log(limit, offset, "fsdfsd");
+    const productsData = await Product.find({
+      user: req.user._id.toString(),
+    });
     console.log(req.user._id.toString());
-    const productsCollectionCount = await Product.count();
-    const totalPages = Math.ceil(productsCollectionCount / limit);
-    const currentPage = Math.ceil(productsCollectionCount % offset);
+    const productsDataCount = await Product.count();
+    const totalPages = Math.ceil(productsDataCount / limit);
+    const currentPage = Math.ceil(productsDataCount % offset);
     return res.status(200).send({
       message: "ok",
-      data: productsCollection,
+      data: productsData,
       paging: {
-        total: productsCollectionCount,
+        total: productsDataCount,
         page: currentPage,
         pages: totalPages,
       },
@@ -76,7 +79,10 @@ const delete_each_product = async (req, res, next) => {
 Product.find({});
 const product_delete_all = async (req, res) => {
   try {
-    const data = await Product.deleteMany({ user: req.user._id.toString(), checked: true });
+    const data = await Product.deleteMany({
+      user: req.user._id.toString(),
+      checked: true,
+    });
     return res.status(200).send({
       message: "OK",
       data,
@@ -88,6 +94,7 @@ const product_delete_all = async (req, res) => {
     });
   }
 };
+
 const delete_specific_todo = async (req, res, next) => {
   try {
     await todoModel.findByIdAndDelete(req.params.id).then(() => {

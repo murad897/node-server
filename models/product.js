@@ -30,3 +30,8 @@ const ProdcutSchema = new Schema(
 const Product = mongoose.model("Product", ProdcutSchema);
 
 module.exports = Product;
+
+// udalaw token is mongodb
+//pagination
+//install mongodb
+//oifcial tutorial mongodb

@@ -1,7 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
 require("dotenv").config();
 
 const login_user = async (req, res) => {
@@ -51,7 +50,7 @@ const registrate_user = async (req, res) => {
       return res.status(409).send("User Already Exist. Please Login");
     }
 
-    encryptedPassword = await bcrypt.hash(password, 10);
+    const encryptedPassword = await bcrypt.hash(password, 10);
     // Create user in our database
     const user = await User.create({
       first_name,
@@ -67,7 +66,28 @@ const registrate_user = async (req, res) => {
   }
 };
 
+const logout_user = async (req, res) => {
+  console.log(req.params.id);
+  try {
+    await User.updateOne({ _id: req.params.id }, { $set: { token: "" } }).catch(
+      (error) => {
+        console.log(error);
+      }
+    );
+    console.log("user updated");
+
+    return res.status(200).json({
+      message: "user-logout-succsses",
+    });
+  } catch {
+    return res.status(404).json({
+      message: "user-logout-not-succsses",
+    });
+  }
+};
+
 module.exports = {
   registrate_user,
   login_user,
+  logout_user,
 };
