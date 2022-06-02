@@ -24,6 +24,7 @@ const verifyToken = async (req, res, next) => {
   }
   //request to mongodb
   req.user = currentUser;
+
   // Next middleware
   next();
 };
